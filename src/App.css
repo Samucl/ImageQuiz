@@ -1,38 +1,249 @@
+@Import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@900&family=Galindo&display=swap');
+
+
+body {
+  font-family: 'Archivo', sans-serif;
+  background-color: dimgray;
+}
+
 .App {
+  font-size: calc(10px + 2vmin);
+}
+
+.topbar {
+  background-color: #f5f5f5;
+  z-index: 5;
+  box-shadow: 0 4px 7px 1px rgba(0,0,0,0.07);
+  overflow-x: hidden;
+}
+
+.topbar img {
+  height: 35px;
+  margin-left: 20px;
+}
+
+.topbar nav {
+  padding: 7px;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.topbar button {
+  margin: 3px 20px 3px 20px;
+  border-radius: 10px;
+  padding: 5px 10px 5px 10px;
+  border: 0;
+  background-color: white;
+  color: black;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.6);
+}
+
+.topbar p {
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  color: white;
+}
+
+.navLinks {
   text-align: center;
+  background-color: white;
+  margin: 0 20px 0 20px;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+  color: black;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.6);
+}
+.navLinks:hover{
+  background-color: gray;
+  color: white;
+}
+.topbar button:hover {
+  background-color: gray;
+  color: white;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.formdiv {
+  color: white;
+  background-color: #212529;
+  width: auto;
+  height: auto;
+  position: absolute;
+  right: 10px;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+  z-index: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.formdiv h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateY(-500px);
+}
+.slide-enter-active {
+  opacity: 1;
+  transition: all 400ms ease-out;
+  transform: translateY(0);
+}
+.slide-exit {
+  opacity: 1;
+}
+.slide-exit-active {
+  opacity: 0;
+  transition: all 400ms ease-in;
+  transform: translateY(-500px);
+}
+
+.subButton {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.game {
+  text-align: center;
+  position: relative;
+  margin-top: 20px;
+}
+
+.gameContainer {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 15px;
+  background-color: #212529;
+  border-radius: 10px;
+}
+.gameImageContainer{
+  background-color: #212529;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.gameImage {
+  max-height: 60vh;
+  border-radius: 10px;
+}
+
+.gameButtonContainer {
+  max-width: fit-content;
+  margin: 0 auto;
+  padding: 3px;
+}
+
+.gameButtonContainer td{
+  width: 100vh;
+  text-align:center;
+}
+
+.gameButton {
+  width: 100%;
+  border-radius: 10px;
+  margin: 10px 50px 0 0;
+  border: 0;
+}
+
+.gameTimeContainer {
+  background-color: gray;
+  width: 20vh;
+  margin: 0 auto;
+  border-radius: 10px 10px 0 0;
+  font-size: 4vh;
+  font-weight: bold;
+}
+
+.gameTimeContainer h5 {
+  font-family: 'Galindo', cursive;
+  font-size: 3vh;
+  padding-top: 10px;
+  margin: 0;
+  color: white;
+}
+
+.pointsContainer {
+  color: white;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 13px 10px 5px 7px;
+  border-radius: 0 0 10px 0;
+  z-index: 50;
+}
+
+.pointsContainer h5 {
+  font-family: 'Galindo', cursive;
+  font-size: 2vh;
+}
+
+.endDiv {
+  color: white;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 50px;
+  border-radius: 10px;
+  text-align: center;
+  max-height: 60vh;
+  max-width: 80vh;
+}
+
+.endDiv{
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.64);
+}
+
+/* Animaatiot kuvaan */
+
+@keyframes panOut {
+  0% {
+    transform: scale(8);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.imgPanOut{
+  animation: 6s ease-out 0s 1 panOut;
+}
+
+@keyframes blur {
+  0% {
+    filter: blur(20px);
+  }
+  100% {
+    filter: blur(0px);
+  }
+}
+
+.imgBlur{
+  animation: 6s ease-out 0s 1 blur;
+}
+
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.divOpacity{
+  animation: 1s ease-out 0s 1 opacity;
+}
+
+.Route p {
+  color: black;
 }
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
