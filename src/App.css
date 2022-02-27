@@ -1,10 +1,9 @@
 @Import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@900&family=Galindo&display=swap');
 
-
 body {
   font-family: 'Archivo', sans-serif;
-  background-color: dimgray;
+  background-color: palevioletred;
 }
 
 .App {
@@ -13,9 +12,8 @@ body {
 
 .topbar {
   background-color: #f5f5f5;
-  z-index: 5;
-  box-shadow: 0 4px 7px 1px rgba(0,0,0,0.07);
-  overflow-x: hidden;
+  z-index: 100;
+  box-shadow: 0 4px 7px 1px rgba(0,0,0,0.2);
 }
 
 .topbar img {
@@ -27,9 +25,6 @@ body {
   padding: 7px;
 }
 
-.no-padding {
-  padding: 0 !important;
-}
 
 .topbar button {
   margin: 3px 20px 3px 20px;
@@ -48,21 +43,12 @@ body {
   color: white;
 }
 
-.navLinks {
+.topbar text {
   text-align: center;
-  background-color: white;
-  margin: 0 20px 0 20px;
-  padding: 5px 10px 5px 10px;
-  text-decoration: none;
-  color: black;
-  border: 0;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.6);
+  vertical-align: middle;
+  margin-top: 8px;
 }
-.navLinks:hover{
-  background-color: gray;
-  color: white;
-}
+
 .topbar button:hover {
   background-color: gray;
   color: white;
@@ -77,12 +63,103 @@ body {
   right: 10px;
   padding: 20px;
   border-radius: 0 0 20px 20px;
-  z-index: 1;
+  z-index: 90;
 }
 
 .formdiv h3 {
   text-align: center;
   margin-bottom: 20px;
+}
+.rows{
+  height: calc(100vh - 62px);
+}
+
+.sidebarCol {
+  background-color: palevioletred;
+  padding: 0;
+  z-index: 2;
+  text-align: center;
+}
+
+.switchCol {
+  background-color: palevioletred;
+  z-index: 1;
+  position: relative;
+}
+
+.sidebar {
+  background-color: white;
+  width: 130px;
+  height: 100%;
+  position: relative;
+}
+
+.sidebar button {
+  margin-top: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 0;
+  width: 90%;
+  background-color: white;
+  color: black;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.6);
+  font-size: 15px;
+}
+
+.sidebar button:hover {
+  background-color: gray;
+  color: white;
+}
+
+.dropButton {
+  position: absolute;
+  border-radius: 10px;
+  border: 0;
+  width: 40px;
+  height: 40px;
+  padding-top: 2px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.6);
+  transform: translate(7px, 7px);
+  z-index: 200;
+  font-size: 25px;
+  opacity: 50%;
+}
+.dropButton:hover {
+  opacity: 100%;
+}
+
+#dropButtonClose {
+  background-color: dimgray;
+  padding: 0;
+  color: white;
+  height: 30px;
+}
+#dropButtonClose:hover {
+  background-color: gray;
+  color: white;
+}
+
+.gitHubDiv {
+  position: absolute;
+  bottom: 10px;
+}
+
+.gitHubDiv text{
+  font-size: 10px;
+  margin: 0;
+  opacity: 50%;
+}
+
+.gitHubDiv img{
+  opacity: 30%;
+  width: 100px;
+  margin-left: 5px;
+  transform: translateY(12px);
+}
+
+#gitHubButton {
+  background-color: dimgray;
+  color: white;
 }
 
 .slide-enter {
@@ -227,6 +304,21 @@ body {
   animation: 6s ease-out 0s 1 blur;
 }
 
+@keyframes slide {
+  0% {
+    transform: translateX(-130px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 100%;
+  }
+}
+
+.slideSide{
+  animation: 0.2s ease-out 0s 1 slide;
+}
+
 @keyframes opacity {
   0% {
     opacity: 0;
@@ -234,6 +326,36 @@ body {
   100% {
     opacity: 100%;
   }
+}
+
+.slideSide-enter {
+  transform: translateX(-130px);
+}
+.slideSide-enter-active {
+  transform: translateX(0);
+  transition: all 400ms ease-out;
+}
+.slideSide-exit {
+  transform: translateX(0);
+}
+.slideSide-exit-active {
+  transform: translateX(-130px);
+  transition: all 400ms ease-in;
+}
+
+.opacityTransition-enter {
+  opacity: 0;
+}
+.opacityTransition-enter-active {
+  opacity: 1;
+  transition: all 400ms ease-out;
+}
+.opacityTransition-exit {
+  opacity: 1;
+}
+.opacityTransition-exit-active {
+  opacity: 0;
+  transition: all 400ms ease-in;
 }
 
 .divOpacity{
@@ -246,4 +368,8 @@ body {
 
 .App-link {
   color: #61dafb;
+}
+
+.no-padding {
+  padding: 0 !important;
 }

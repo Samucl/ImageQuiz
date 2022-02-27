@@ -8,7 +8,7 @@ export default class Game extends Component {
     constructor() {
         super();
         //Date tallennettava stateen. Muuten countdownin aika resetoituu aina kun setState kutsutaan.
-        let date = Date.now() + 5000;
+        let date = Date.now() + 60000;
         this.state = {
             isGameStart: false,
             isGameEnd: false,
@@ -39,7 +39,7 @@ export default class Game extends Component {
     }
 
     handleExpirationDate() {
-        this.setState({expirationDate: Date.now() + 5000})
+        this.setState({expirationDate: Date.now() + 60000})
     }
 
     getImage() {
@@ -55,7 +55,6 @@ export default class Game extends Component {
              .then(res =>{
                  this.setState({img: res.data.url})
                  this.setState({item: res.data.item})
-                 console.log(res.data)
              })
     }
 
@@ -113,18 +112,18 @@ export default class Game extends Component {
                 <div className={"gameTimeContainer"}>
                     {this.state.isGameStart ?
                         <Countdown date={this.state.expirationDate} renderer={this.renderer}/>
-                        : <div> </div>}
+                        : null}
                 </div>
                 <div className={"gameContainer"}>
                     {this.state.isGameEnd ?
                     <div className={"endDiv"}>
                         <h5>Pelin lopulliset pisteet</h5>
                         <h1>{this.state.points}</h1>
-                    </div> : <div> </div>}
+                    </div> : null}
                     {this.state.isGameStart ?
                     <div className={"pointsContainer"}>
                         <h5>Pisteet: {this.state.points}</h5>
-                    </div> : <div> </div>}
+                    </div> : null}
                     <div className={"gameImageContainer"}>
                         <Image fluid src={this.state.img} alt={"GameImage"} className={"gameImage " + this.state.effectClass} onLoad={() => this.randomEffect()}/>
                     </div>

@@ -10,7 +10,7 @@ export default class Home extends Component {
     render() {
         return (
             <div className={"homeDiv divOpacity"}>
-                <h1 style={{color: 'White'}}>Etusivu</h1>
+                <h1 style={{color: 'White', padding: '50px'}}>Etusivu</h1>
             </div>
         )
     }
