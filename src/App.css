@@ -21,6 +21,10 @@ body {
   margin-left: 20px;
 }
 
+.topbar img:hover {
+  transform: scale(1.1);
+}
+
 .topbar nav {
   padding: 7px;
 }
@@ -47,6 +51,16 @@ body {
   text-align: center;
   vertical-align: middle;
   margin-top: 8px;
+}
+
+#logoutButton {
+  background-color: indianred;
+  color: white;
+}
+
+#logoutButton:hover {
+  background-color: firebrick;
+  color: white;
 }
 
 .topbar button:hover {
@@ -92,6 +106,7 @@ body {
   width: 130px;
   height: 100%;
   position: relative;
+  box-shadow: 4px 0 7px 1px rgba(0,0,0,0.1);
 }
 
 .sidebar button {
@@ -109,6 +124,20 @@ body {
 .sidebar button:hover {
   background-color: gray;
   color: white;
+  transform: scale(1.05);
+}
+
+#usernameText {
+  background-color: lightgray;
+  text-align: center;
+  align-content: center;
+  margin-top: 10px;
+  padding:  10px 0 10px 0;
+}
+
+#usernameText p {
+font-size: 14px;
+  margin: 0;
 }
 
 .dropButton {
@@ -129,14 +158,15 @@ body {
 }
 
 #dropButtonClose {
-  background-color: dimgray;
+  background-color: cornflowerblue;
   padding: 0;
   color: white;
   height: 30px;
 }
 #dropButtonClose:hover {
-  background-color: gray;
+  background-color: dodgerblue;
   color: white;
+  transform: scale(1.05);
 }
 
 .gitHubDiv {
@@ -225,6 +255,11 @@ body {
   border-radius: 10px;
   margin: 10px 50px 0 0;
   border: 0;
+}
+
+.gameButton:hover {
+  background-color: black;
+  color: white;
 }
 
 .gameTimeContainer {

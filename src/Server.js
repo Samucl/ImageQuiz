@@ -8,10 +8,9 @@ var util = require('util'); // for async calls
 //var utilPromisify = require('util.promisify').shim(); // ?? for connection pools
 require('dotenv').config()
 const secrets = require('../config/secrets.js');
-console.log("secret: " + secrets.jwtSecret);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const animals = require('random-animals-api');
+const animals1 = require('random-animals-api');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // for reading JSON
@@ -41,7 +40,6 @@ conn.connect(function(err) {
 function authenticateToken(req, res, next) {
     const header = req.headers['authorization']
     const token = header && header.split(' ')[1]
-    console.log("token: " + token)
     if(token == null){
         return res.status(401).send("Tokenin luonnissa ongelma")
     }
@@ -54,11 +52,36 @@ function authenticateToken(req, res, next) {
     })
 }
 
+app.post("/api/score", urlencodedParser, authenticateToken , function (req, res) {
+    let jsonObj = req.body;
+    (async () => {
+        try {
+            if(jsonObj == null){
+                return
+            }
+            let sql = "SELECT score FROM animals_scores WHERE userid = (SELECT id FROM user WHERE username = ?)";
+            let result = await query(sql, [req.user.name.username]);
+
+            if(result.length === 0) {
+                sql = "INSERT INTO animals_scores (score, userid) VALUES (?, (SELECT id FROM user WHERE username = ?))";
+                await query(sql, [jsonObj.points, req.user.name.username]);
+            }
+            if(jsonObj.points > result[0].score) {
+                sql = "UPDATE animals_scores SET score = ? WHERE (SELECT id FROM user WHERE username = ?)";
+                await query(sql, [jsonObj.points, req.user.name.username]);
+            }
+
+            res.status(200).send("POST succesful " + req.body);
+        } catch (err) {
+            res.status(400).send("POST was not succesful " + err);
+        }
+    })()
+});
+
 app.post("/api/checkUsername", urlencodedParser, authenticateToken, function (req, res){
     (async () => {
         try {
             const user = req.user;
-            console.log("username: " + JSON.stringify(user.name.username))
             res.status(200).send(user.name.username)
         }catch (err){}
     })()
@@ -67,11 +90,15 @@ app.post("/api/checkUsername", urlencodedParser, authenticateToken, function (re
 app.get('/api/getAnimal', (req, res) => {
     (async () => {
         try {
+            let names = ["Kissa", "Koira", "Kani", "Ankka", "Kettu", "Lisko", "Koala", "Panda"]
+            const sortRand = Math.random()
+            names = names.sort(() => sortRand - 0.5)
             //Luodaan taulukko jossa eri random-animal-apin funktioita
-            const a = [animals.cat, animals.dog, animals.bunny, animals.duck, animals.fox, animals.lizard, animals.koala, animals.panda]
-            let rand = Math.floor(Math.random() * 7);
-            a[rand]()
-                .then(url => res.send({url: url, item: rand}))
+            let functions = [animals1.cat, animals1.dog, animals1.bunny, animals1.duck, animals1.fox, animals1.lizard, animals1.koala, animals1.panda]
+            functions = functions.sort(() => sortRand - 0.5)
+            const rand = Math.floor(Math.random() * 7);
+            functions[rand]()
+                .then(url => res.send({url: url, item: rand, names: names}))
                 .catch((error) => console.error(error));
         }
         catch (err) {

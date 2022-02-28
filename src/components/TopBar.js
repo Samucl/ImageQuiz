@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import logo from '../res/testlogo.png';
-import {Navbar, Form, Button, Alert, Container, Nav, NavDropdown} from 'react-bootstrap'
+import {Navbar, Form, Button, Alert, Container, Nav} from 'react-bootstrap'
 import {CSSTransition} from "react-transition-group";
 import {Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import redirect from "react-router-dom/es/Redirect";
 export default class TopBar extends Component {
 
     constructor(props) {
@@ -154,7 +155,7 @@ export default class TopBar extends Component {
     render() {
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className={"topbar"}>
+                <Navbar collapseOnSelect expand="sm" bg="light" variant="light" className={"topbar"}>
                     <Container fluid>
                         <Navbar.Brand><Link to="/"><img src={logo} alt={"logo"}/></Link></Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -162,11 +163,7 @@ export default class TopBar extends Component {
                             <Nav className="me-auto"> </Nav>
                             {this.props.isLogged ?
                             <Nav>
-                                <NavDropdown align="end" title=" " id="basic-nav-dropdown">
-                                    <NavDropdown.Item><text className={"order-sm-12"}>kirjautuneena: {this.props.username}</text></NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item><button className={"order-sm-1"} onClick={this.handleLogout}><Redirect to={"/"}/>Kirjaudu ulos</button></NavDropdown.Item>
-                                </NavDropdown>
+                                <button id={"logoutButton"} className={"order-sm-1"} onClick={this.handleLogout}><Redirect to={"/"}/>Kirjaudu ulos</button>
                             </Nav>
                                 : <Nav>
                                     <button onClick={this.handleisLoginShown}>Kirjaudu</button>

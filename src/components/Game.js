@@ -3,12 +3,13 @@ import axios from "axios";
 import {Button, Container, Image} from 'react-bootstrap'
 import tempimg from '../res/tempimg.png';
 import Countdown from "react-countdown";
+import GameCompletedHandler from "./GameCompletedHandler";
 export default class Game extends Component {
 
     constructor() {
         super();
         //Date tallennettava stateen. Muuten countdownin aika resetoituu aina kun setState kutsutaan.
-        let date = Date.now() + 60000;
+        let date = Date.now() + 10000;
         this.state = {
             isGameStart: false,
             isGameEnd: false,
@@ -18,6 +19,8 @@ export default class Game extends Component {
             img: tempimg,
             effectClass: '',
             points: 0,
+            displayPoints: 0,
+            names: [],
         }
         this.getImage = this.getImage.bind(this);
         this.renderer = this.renderer.bind(this);
@@ -27,6 +30,8 @@ export default class Game extends Component {
         this.handleExpirationDate = this.handleExpirationDate.bind(this);
         this.randomEffect = this.randomEffect.bind(this);
         this.resetEffects = this.resetEffects.bind(this);
+        this.handleScore = this.handleScore.bind(this);
+        this.completed = this.completed.bind(this);
     }
 
     handleIsGameStart() {
@@ -39,7 +44,7 @@ export default class Game extends Component {
     }
 
     handleExpirationDate() {
-        this.setState({expirationDate: Date.now() + 60000})
+        this.setState({expirationDate: Date.now() + 10000})
     }
 
     getImage() {
@@ -55,6 +60,7 @@ export default class Game extends Component {
              .then(res =>{
                  this.setState({img: res.data.url})
                  this.setState({item: res.data.item})
+                 this.setState({names: res.data.names})
              })
     }
 
@@ -95,12 +101,30 @@ export default class Game extends Component {
         }
     }
 
+    handleScore() {
+        let points = { points: this.state.points }
+        if(this.state.points !== 0){
+            let tokenJson
+            tokenJson = localStorage.getItem('myToken')
+
+            axios
+                .post('http://localhost:8080/api/score', points,
+                    { headers: {Authorization: 'Bearer: ' + tokenJson}})
+                .then(res => {})
+        }
+    }
+
+    completed() {
+        this.setState({displayPoints: this.state.points});
+        this.handleScore()
+        this.handleIsGameEnd() //TODO: Käytä loppuruudun näkymiseen (Ei tee vielä mitään)
+        this.handleIsGameStart()
+        this.resetEffects()
+    }
+
     renderer ({seconds, completed}) {
         if (completed) {
-            this.handleIsGameEnd() //TODO: Käytä loppuruudun näkymiseen (Ei tee vielä mitään)
-            this.handleIsGameStart()
-            this.resetEffects()
-            return null
+            return <GameCompletedHandler completed={this.completed}/>;
         } else {
             return <h5>{seconds}s</h5>;
         }
@@ -118,7 +142,7 @@ export default class Game extends Component {
                     {this.state.isGameEnd ?
                     <div className={"endDiv"}>
                         <h5>Pelin lopulliset pisteet</h5>
-                        <h1>{this.state.points}</h1>
+                        <h1>{this.state.displayPoints}</h1>
                     </div> : null}
                     {this.state.isGameStart ?
                     <div className={"pointsContainer"}>
@@ -132,20 +156,20 @@ export default class Game extends Component {
                             <table>
                                 <tbody>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(0)} className="gameButton btn btn-light">Kissa</Button></td>
-                                    <td><Button onClick={() => this.checkButton(1)} className="gameButton btn btn-light">Koira</Button></td>
+                                    <td><Button onClick={() => this.checkButton(0)} className="gameButton btn btn-light">{this.state.names[0]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(1)} className="gameButton btn btn-light">{this.state.names[1]}</Button></td>
                                 </tr>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(2)} className="gameButton btn btn-light">Kani</Button></td>
-                                    <td><Button onClick={() => this.checkButton(3)} className="gameButton btn btn-light">Ankka</Button></td>
+                                    <td><Button onClick={() => this.checkButton(2)} className="gameButton btn btn-light">{this.state.names[2]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(3)} className="gameButton btn btn-light">{this.state.names[3]}</Button></td>
                                 </tr>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(4)} className="gameButton btn btn-light">Kettu</Button></td>
-                                    <td><Button onClick={() => this.checkButton(5)} className="gameButton btn btn-light">Lisko</Button></td>
+                                    <td><Button onClick={() => this.checkButton(4)} className="gameButton btn btn-light">{this.state.names[4]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(5)} className="gameButton btn btn-light">{this.state.names[5]}</Button></td>
                                 </tr>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(6)} className="gameButton btn btn-light">Koala</Button></td>
-                                    <td><Button onClick={() => this.checkButton(7)} className="gameButton btn btn-light">Panda</Button></td>
+                                    <td><Button onClick={() => this.checkButton(6)} className="gameButton btn btn-light">{this.state.names[6]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(7)} className="gameButton btn btn-light">{this.state.names[7]}</Button></td>
                                 </tr>
                                 </tbody>
                             </table>

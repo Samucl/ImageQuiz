@@ -8,6 +8,7 @@ import axios from "axios";
 import SideBar from "./components/SideBar";
 import {Col, Container, Row} from "react-bootstrap";
 import {CSSTransition} from "react-transition-group";
+import HighScore from "./components/HighScore";
 
 function App() {
 
@@ -26,9 +27,16 @@ function App() {
                     setUsername(res.data)
                     setIsLogged(true);
                 })
+                .catch(() => {
+                    //Tyhjennetään Local Storage, jos jwt token on vanhentunut.
+                    localStorage.removeItem("myToken");
+                    localStorage.removeItem("username");
+                })
         }
     })
 
+
+    //Komponenttien props muuttujien handler-funktiot
     const handleIsLogged = (isLoggedFromTopBar) => { setIsLogged(isLoggedFromTopBar) }
     const handleDisplayUsername = (DisplayUsernameFromTopBar) => { setUsername(DisplayUsernameFromTopBar) }
     const handleShowSidebar = (showSidebarFromTopBar) => { setShowSidebar(showSidebarFromTopBar) }
@@ -36,12 +44,12 @@ function App() {
     return (
         <div className="container-fluid no-padding">
             <Router>
-                <TopBar username={username} isLogged={isLogged} changeIsLogged={handleIsLogged} changeDisplayUsername={handleDisplayUsername} showSidebar={showSidebar} changeShowSidebar={handleShowSidebar}/>
+                <TopBar isLogged={isLogged} changeIsLogged={handleIsLogged} changeDisplayUsername={handleDisplayUsername} showSidebar={showSidebar} changeShowSidebar={handleShowSidebar}/>
                 <Container fluid className={"switchContainer"}>
                     <Row className={"rows"}>
                         <CSSTransition in={isLogged && showSidebar} unmountOnExit timeout={400} classNames="slideSide">
                             <Col className={"sidebarCol"} sm={"auto"} xs={3} >
-                            <SideBar showSidebar={showSidebar} changeShowSidebar={handleShowSidebar}/>
+                            <SideBar username={username} showSidebar={showSidebar} changeShowSidebar={handleShowSidebar}/>
                         </Col>
                         </CSSTransition>
                         <CSSTransition in={isLogged && showSidebar} timeout={400} classNames="opacityTransition">
@@ -50,8 +58,11 @@ function App() {
                                 <Route path="/game">
                                     <Game />
                                 </Route>
+                                <Route path="/highscores">
+                                    <HighScore />
+                                </Route>
                                 <Route path="/">
-                                    <Home />
+                                    <Home username={username}/>
                                 </Route>
                             </Switch>
                         </Col>
