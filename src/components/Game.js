@@ -4,13 +4,15 @@ import {Button, Container, Image} from 'react-bootstrap'
 import tempimg from '../res/tempimg.png';
 import Countdown from "react-countdown";
 import GameCompletedHandler from "./GameCompletedHandler";
+import GameSelection from "./GameSelection";
 export default class Game extends Component {
 
     constructor() {
         super();
         //Date tallennettava stateen. Muuten countdownin aika resetoituu aina kun setState kutsutaan.
-        let date = Date.now() + 10000;
+        let date = Date.now() + 60000;
         this.state = {
+            isGameSelected: false,
             isGameStart: false,
             isGameEnd: false,
             item: '',
@@ -21,6 +23,7 @@ export default class Game extends Component {
             points: 0,
             displayPoints: 0,
             names: [],
+            game: ''
         }
         this.getImage = this.getImage.bind(this);
         this.renderer = this.renderer.bind(this);
@@ -32,6 +35,12 @@ export default class Game extends Component {
         this.resetEffects = this.resetEffects.bind(this);
         this.handleScore = this.handleScore.bind(this);
         this.completed = this.completed.bind(this);
+        this.handleIsGameSelected = this.handleIsGameSelected.bind(this);
+    }
+
+    handleIsGameSelected(name) {
+        this.setState({isGameSelected: true})
+        this.setState({game: name})
     }
 
     handleIsGameStart() {
@@ -44,7 +53,7 @@ export default class Game extends Component {
     }
 
     handleExpirationDate() {
-        this.setState({expirationDate: Date.now() + 10000})
+        this.setState({expirationDate: Date.now() + 60000})
     }
 
     getImage() {
@@ -56,7 +65,7 @@ export default class Game extends Component {
         }
         this.resetEffects()
          axios
-             .get('http://localhost:8080/api/getAnimal')
+             .get('http://localhost:8080/api/get' + this.state.game)
              .then(res =>{
                  this.setState({img: res.data.url})
                  this.setState({item: res.data.item})
@@ -108,7 +117,7 @@ export default class Game extends Component {
             tokenJson = localStorage.getItem('myToken')
 
             axios
-                .post('http://localhost:8080/api/score', points,
+                .post('http://localhost:8080/api/score' + this.state.game, points,
                     { headers: {Authorization: 'Bearer: ' + tokenJson}})
                 .then(res => {})
         }
@@ -117,7 +126,7 @@ export default class Game extends Component {
     completed() {
         this.setState({displayPoints: this.state.points});
         this.handleScore()
-        this.handleIsGameEnd() //TODO: Käytä loppuruudun näkymiseen (Ei tee vielä mitään)
+        this.handleIsGameEnd()
         this.handleIsGameStart()
         this.resetEffects()
     }
@@ -130,8 +139,12 @@ export default class Game extends Component {
         }
     }
 
+
+
     render() {
         return (
+            <div>
+            {this.state.isGameSelected ?
             <Container fluid className="game divOpacity">
                 <div className={"gameTimeContainer"}>
                     {this.state.isGameStart ?
@@ -176,7 +189,8 @@ export default class Game extends Component {
                         </div>
                         : <div><Button className="gameButton btn btn-light" onClick={this.getImage}>Aloita peli</Button></div>}
                 </div>
-            </Container>
+            </Container>: <GameSelection handleIsGameSelected={this.handleIsGameSelected}/>}
+            </div>
         )
     }
 }

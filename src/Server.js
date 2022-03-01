@@ -52,7 +52,7 @@ function authenticateToken(req, res, next) {
     })
 }
 
-app.post("/api/score", urlencodedParser, authenticateToken , function (req, res) {
+app.post("/api/scoreAnimals", urlencodedParser, authenticateToken , function (req, res) {
     let jsonObj = req.body;
     (async () => {
         try {
@@ -87,7 +87,7 @@ app.post("/api/checkUsername", urlencodedParser, authenticateToken, function (re
     })()
 });
 
-app.get('/api/getAnimal', (req, res) => {
+app.get('/api/getAnimals', (req, res) => {
     (async () => {
         try {
             let names = ["Kissa", "Koira", "Kani", "Ankka", "Kettu", "Lisko", "Koala", "Panda"]

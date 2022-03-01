@@ -4,7 +4,6 @@ import {Navbar, Form, Button, Alert, Container, Nav} from 'react-bootstrap'
 import {CSSTransition} from "react-transition-group";
 import {Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import redirect from "react-router-dom/es/Redirect";
 export default class TopBar extends Component {
 
     constructor(props) {
