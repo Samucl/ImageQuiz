@@ -15,6 +15,7 @@ export default class Game extends Component {
             isGameSelected: false,
             isGameStart: false,
             isGameEnd: false,
+            isEffects: true,
             item: '',
             expirationDate: date,
             seconds: '',
@@ -36,6 +37,11 @@ export default class Game extends Component {
         this.handleScore = this.handleScore.bind(this);
         this.completed = this.completed.bind(this);
         this.handleIsGameSelected = this.handleIsGameSelected.bind(this);
+        this.disableEffects = this.disableEffects.bind(this);
+    }
+
+    disableEffects() {
+        this.setState({isEffects: false})
     }
 
     handleIsGameSelected(name) {
@@ -78,7 +84,7 @@ export default class Game extends Component {
     }
 
     randomEffect() {
-        if(this.state.isGameStart){
+        if(this.state.isGameStart && this.state.isEffects){
             let rand = Math.floor(Math.random() * 2);
 
             switch (rand) {
@@ -189,7 +195,7 @@ export default class Game extends Component {
                         </div>
                         : <div><Button className="gameButton btn btn-light" onClick={this.getImage}>Aloita peli</Button></div>}
                 </div>
-            </Container>: <GameSelection handleIsGameSelected={this.handleIsGameSelected}/>}
+            </Container>: <GameSelection handleIsGameSelected={this.handleIsGameSelected} disableEffects={this.disableEffects}/>}
             </div>
         )
     }

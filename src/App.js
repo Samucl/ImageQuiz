@@ -57,6 +57,9 @@ function App() {
                             <Switch>
                                 <Route path="/game">
                                     <Game />
+                                    {!isLogged ?
+                                    <div className={"alertDiv"}><div><p>Kirjaudu sisään pelataksesi</p></div></div>
+                                        : null}
                                 </Route>
                                 <Route path="/highscores">
                                     <HighScore />

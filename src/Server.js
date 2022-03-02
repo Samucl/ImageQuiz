@@ -11,6 +11,7 @@ const secrets = require('../config/secrets.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const animals1 = require('random-animals-api');
+const fetch = require("node-fetch");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // for reading JSON
@@ -78,6 +79,32 @@ app.post("/api/scoreAnimals", urlencodedParser, authenticateToken , function (re
     })()
 });
 
+app.post("/api/scoreFlags", urlencodedParser, authenticateToken , function (req, res) {
+    let jsonObj = req.body;
+    (async () => {
+        try {
+            if(jsonObj == null){
+                return
+            }
+            let sql = "SELECT score FROM flags_scores WHERE userid = (SELECT id FROM user WHERE username = ?)";
+            let result = await query(sql, [req.user.name.username]);
+
+            if(result.length === 0) {
+                sql = "INSERT INTO flags_scores (score, userid) VALUES (?, (SELECT id FROM user WHERE username = ?))";
+                await query(sql, [jsonObj.points, req.user.name.username]);
+            }
+            if(jsonObj.points > result[0].score) {
+                sql = "UPDATE flags_scores SET score = ? WHERE (SELECT id FROM user WHERE username = ?)";
+                await query(sql, [jsonObj.points, req.user.name.username]);
+            }
+
+            res.status(200).send("POST succesful " + req.body);
+        } catch (err) {
+            res.status(400).send("POST was not succesful " + err);
+        }
+    })()
+});
+
 app.post("/api/checkUsername", urlencodedParser, authenticateToken, function (req, res){
     (async () => {
         try {
@@ -107,12 +134,26 @@ app.get('/api/getAnimals', (req, res) => {
     })()
 });
 
-app.get('/api/getEmojis', (req, res) => {
+const randomUnique = (range, count) => {
+    let nums = new Set();
+    while (nums.size < count) {
+        nums.add(Math.floor(Math.random() * range));
+    }
+    return [...nums];
+}
+
+app.get('/api/getFlags', (req, res) => {
     (async () => {
         try {
-            testi = [1, 2, 3, 4, 5, 6, 7, 8]
-
-
+            const rndms = randomUnique(250, 8)
+            fetch('https://restcountries.com/v3.1/all')
+                .then(response => response.json())
+                .then(data => {
+                    const names = [data[rndms[0]].name.common, data[rndms[1]].name.common, data[rndms[2]].name.common, data[rndms[3]].name.common,
+                        data[rndms[4]].name.common, data[rndms[5]].name.common, data[rndms[6]].name.common, data[rndms[7]].name.common];
+                    const rand = Math.floor(Math.random() * 7);
+                    res.send({url: data[rndms[rand]].flags.png, item: rand, names: names})
+                })
         }
         catch (err) {
             console.log(err);
