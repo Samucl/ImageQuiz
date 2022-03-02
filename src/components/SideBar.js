@@ -6,22 +6,39 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import {OverlayTrigger, Popover} from "react-bootstrap";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import axios from "axios";
 export default class SideBar extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            xp: 0,
+        }
+    }
+
+    getXp() {
+        let tokenJson
+        tokenJson = localStorage.getItem('myToken')
+        if(tokenJson!=null){
+            axios
+                .post('http://localhost:8080/api/getXp', ' ',
+                    { headers: {Authorization: 'Bearer: ' + tokenJson}})
+                .then(res => {
+                    this.setState({xp: res.data.xp})
+                })
         }
     }
 
     render() {
+
+        const taso = Math.floor(this.state.xp/100);
 
         const profile = (
             <Popover id="popover-basic">
                 <Popover.Header as="h3"><FontAwesomeIcon icon={faUser} /> {this.props.username}</Popover.Header>
                 <Popover.Body>
                     <p>Tasopisteet</p>
-                    <CircularProgressbar value={50} text={`${50}Pistettä`} />;
+                    <CircularProgressbar value={100} text={`Taso ${taso}`}/>;
                 </Popover.Body>
             </Popover>
         );
@@ -38,7 +55,7 @@ export default class SideBar extends Component {
                 <Link to="/game"><button>Pelit</button></Link>
                 <Link to="/highscores"><button>Huippupisteet</button></Link>
                 <OverlayTrigger trigger="click" placement="right" overlay={profile}>
-                <button>Profiili</button>
+                <button onClick={() => this.getXp()}>Profiili</button>
                 </OverlayTrigger>
                 <div className={"gitHubDiv"}>
                     <img src={gitHubLogo} alt={"GitHubLogo"}/>

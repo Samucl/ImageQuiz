@@ -107,6 +107,19 @@ app.get('/api/getAnimals', (req, res) => {
     })()
 });
 
+app.get('/api/getEmojis', (req, res) => {
+    (async () => {
+        try {
+            testi = [1, 2, 3, 4, 5, 6, 7, 8]
+
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })()
+});
+
 app.post("/api/login", urlencodedParser, function (req, res) {
     (async () =>{
         try {
@@ -129,6 +142,18 @@ app.post("/api/login", urlencodedParser, function (req, res) {
         } catch (err){
             res.status(204).send("Ongelma kirjautumisessa")
         }
+    })()
+});
+
+app.post("/api/getXp", urlencodedParser, authenticateToken, function (req, res){
+    (async () => {
+        try {
+            const user = req.user.name.username;
+            let queryString = "SELECT xp FROM user WHERE username = ?"
+            let result = await query(queryString, [user]);
+            const xp = result[0].xp
+            await res.status(200).json({xp: xp})
+        }catch (err){}
     })()
 });
 

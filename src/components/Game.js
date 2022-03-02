@@ -133,7 +133,7 @@ export default class Game extends Component {
 
     renderer ({seconds, completed}) {
         if (completed) {
-            return <GameCompletedHandler completed={this.completed}/>;
+            return <GameCompletedHandler completed={this.completed} />;
         } else {
             return <h5>{seconds}s</h5>;
         }
