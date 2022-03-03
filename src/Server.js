@@ -186,15 +186,53 @@ app.post("/api/login", urlencodedParser, function (req, res) {
     })()
 });
 
-app.post("/api/getXp", urlencodedParser, authenticateToken, function (req, res){
+app.post("/api/setStats", urlencodedParser, authenticateToken, function (req, res){
+    (async () => {
+        try {
+            //TODO
+        }catch (err){}
+    })()
+});
+
+app.post("/api/getStats", urlencodedParser, authenticateToken, function (req, res){
     (async () => {
         try {
             const user = req.user.name.username;
-            let queryString = "SELECT xp FROM user WHERE username = ?"
+            let queryString = "SELECT xp, games_played FROM user WHERE username = ?"
             let result = await query(queryString, [user]);
-            const xp = result[0].xp
-            await res.status(200).json({xp: xp})
+            if(result === 0 || result === null){
+                return
+            }
+            await res.status(200).json({xp: result[0].xp, gamesPlayed: result[0].games_played})
         }catch (err){}
+    })()
+});
+
+app.get('/api/getAnimalsHighScores', (req, res) => {
+    (async () => {
+        try {
+            let queryString = "SELECT animals_scores.score, user.username FROM animals_scores INNER JOIN user ON user.id = animals_scores.userid ORDER BY score DESC LIMIT 10"
+            let result = await query(queryString, []);
+            res.send(result)
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })()
+});
+
+app.get('/api/getHighScores', (req, res) => {
+    (async () => {
+        try {
+            let queryString = "SELECT animals_scores.score, user.username FROM animals_scores INNER JOIN user ON user.id = animals_scores.userid ORDER BY score DESC LIMIT 10"
+            let animalsArray = await query(queryString, []);
+            queryString = "SELECT flags_scores.score, user.username FROM flags_scores INNER JOIN user ON user.id = flags_scores.userid ORDER BY score DESC LIMIT 10"
+            let flagsArray = await query(queryString, []);
+            res.send({flagsArray: flagsArray, animalsArray: animalsArray})
+        }
+        catch (err) {
+            console.log(err);
+        }
     })()
 });
 
