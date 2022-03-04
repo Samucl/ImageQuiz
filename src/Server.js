@@ -2,7 +2,6 @@ var express = require("express");
 var app = express();
 var bodyParser = require('body-parser'); // Create application/x-www-form-urlencoded parser (for POST)
 //var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var url = require('url');
 var mysql = require('mysql');
 var util = require('util'); // for async calls
 //var utilPromisify = require('util.promisify').shim(); // ?? for connection pools
@@ -21,8 +20,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
 });
-
-var insertedId; // global variable for SQL-updates
 
 const conn = mysql.createConnection({
     host: "localhost",
@@ -95,7 +92,7 @@ app.post("/api/scoreFlags", urlencodedParser, authenticateToken , function (req,
             }
             if(jsonObj.points > result[0].score) {
                 sql = "UPDATE flags_scores SET score = ? WHERE (SELECT id FROM user WHERE username = ?)";
-                await query(sql, [jsonObj.points, req.user.name.username]);
+                await query (sql, [jsonObj.points, req.user.name.username]);
             }
 
             res.status(200).send("POST succesful " + req.body);
@@ -186,10 +183,11 @@ app.post("/api/login", urlencodedParser, function (req, res) {
     })()
 });
 
-app.post("/api/setStats", urlencodedParser, authenticateToken, function (req, res){
+app.post("/api/setStats", urlencodedParser, authenticateToken, function (req){
     (async () => {
         try {
-            //TODO
+            let queryString = "UPDATE user SET games_played = games_played + 1, xp = ? WHERE username = ?"
+            await query(queryString, [req.body.points, req.user.name.username]);
         }catch (err){}
     })()
 });

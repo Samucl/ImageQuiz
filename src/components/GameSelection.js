@@ -21,24 +21,26 @@ export default class GameSelection extends Component {
             <div className={"divOpacity"}>
                 <h1 style={{color: 'White', margin: '30px 0 30px 30px'}}>Valitse peli</h1>
                 <Container fluid>
-                    <Row className={"animalsrow"} onClick={() => this.handleGameSettings('Animals', false)} style={{
+                    <Row className={"gamesrow"} onClick={() => this.handleGameSettings('Animals', false)} style={{
                         backgroundImage: `url(${AnimalsBg})`
                     }}>
                         <Navbar>
                             <Container fluid>
                                 <p>Eläimet</p>
                                 <Navbar.Toggle />
+                                <p>Ennätys 0</p>
                             </Container>
                         </Navbar>
                     </Row>
 
-                    <Row className={"animalsrow"} onClick={() => this.handleGameSettings('Flags', true)} style={{
+                    <Row className={"gamesrow"} onClick={() => this.handleGameSettings('Flags', true)} style={{
                         backgroundImage: `url(${FlagsBg})`
                     }}>
                         <Navbar>
                             <Container fluid>
                                 <p>Liput</p>
                                 <Navbar.Toggle />
+                                <p>Ennätys 0</p>
                             </Container>
                         </Navbar>
                     </Row>

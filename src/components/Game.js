@@ -7,8 +7,8 @@ import GameCompletedHandler from "./GameCompletedHandler";
 import GameSelection from "./GameSelection";
 export default class Game extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         //Date tallennettava stateen. Muuten countdownin aika resetoituu aina kun setState kutsutaan.
         let date = Date.now() + 60000;
         this.state = {
@@ -125,7 +125,11 @@ export default class Game extends Component {
             axios
                 .post('http://localhost:8080/api/score' + this.state.game, points,
                     { headers: {Authorization: 'Bearer: ' + tokenJson}})
-                .then(res => {})
+                .then()
+            axios
+                .post('http://localhost:8080/api/setStats', points,
+                    { headers: {Authorization: 'Bearer: ' + tokenJson}})
+                .then()
         }
     }
 
@@ -144,8 +148,6 @@ export default class Game extends Component {
             return <h5>{seconds}s</h5>;
         }
     }
-
-
 
     render() {
         return (

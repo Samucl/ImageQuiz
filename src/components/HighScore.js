@@ -16,16 +16,31 @@ export default class HighScore extends Component {
             .get('http://localhost:8080/api/getHighScores')
                 .then(res => {
                     let animalsArray = res.data.animalsArray
-                    animalsArray.forEach((item,i) => {
-                        item.id = i + 1;
-                    })
+                    this.handleForEach(animalsArray)
                     this.setState({animalsTop10: animalsArray})
                     let flagsArray = res.data.flagsArray
-                    flagsArray.forEach((item,i) => {
-                        item.id = i + 1;
-                    })
+                    this.handleForEach(flagsArray)
                     this.setState({flagsTop10: flagsArray})
                 })
+    }
+
+    handleForEach(array){
+        array.forEach((item,i) => {
+            item.id = i + 1;
+            switch(item.id) {
+                case 1:
+                    item.username = '🥇 ' + item.username;
+                    break;
+                case 2:
+                    item.username = '🥈 ' + item.username;
+                    break;
+                case 3:
+                    item.username = '🥉 ' + item.username;
+                    break;
+                default:
+                    item.username = ' ' + item.id + '. ' + item.username;
+            }
+        })
     }
 
     componentDidMount() {
@@ -49,8 +64,8 @@ export default class HighScore extends Component {
                                         <p className={"top10score"}>{item.score}</p>
                                     </Col>
                                 </Row>
-                            </li>
-                        )}</Col>
+                            </li>)}
+                        </Col>
 
                         <Col className={"top10col"}>
                             <p style={{fontSize: "30px"}}>🏴Liput🏳️</p>
