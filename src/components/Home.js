@@ -12,8 +12,8 @@ export default class Home extends Component {
     render() {
         return (
             <div className={"homeDiv divOpacity"}>
+                {this.props.isLogged ?
                 <Container fluid className={"homeContainer"}>
-
                     <Row>
                         <Card>
                             <Card.Body>👋 Tervetuloa {this.props.username}!</Card.Body>
@@ -36,7 +36,7 @@ export default class Home extends Component {
                             </Card.Body>
                         </Card>
                     </Row>
-                </Container>
+                </Container> : <div> ImageQuiz! </div>}
             </div>
         )
     }

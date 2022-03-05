@@ -12,6 +12,7 @@ export default class Game extends Component {
         //Date tallennettava stateen. Muuten countdownin aika resetoituu aina kun setState kutsutaan.
         let date = Date.now() + 60000;
         this.state = {
+            isButtonSelected: false,
             isGameSelected: false,
             isGameStart: false,
             isGameEnd: false,
@@ -84,6 +85,7 @@ export default class Game extends Component {
     }
 
     randomEffect() {
+        this.setState({isButtonSelected: false})
         if(this.state.isGameStart && this.state.isEffects){
             let rand = Math.floor(Math.random() * 2);
 
@@ -103,16 +105,18 @@ export default class Game extends Component {
     }
 
     checkButton(int) {
-        console.log(int)
-        if(int === this.state.item){ //Jos kuva arvataan
-            this.getImage()
-            this.setState({points: this.state.points + 10})
-        }
-        else {
-            if(this.state.points > 5)
-                this.setState({points: this.state.points - 5})
-            else
-                this.setState({points: 0})
+        if(!this.state.isButtonSelected){
+            if(int === this.state.item){ //Jos kuva arvataan
+                this.getImage()
+                this.setState({points: this.state.points + 10})
+                this.setState({isButtonSelected: true})
+            }
+            else {
+                if(this.state.points > 5)
+                    this.setState({points: this.state.points - 5})
+                else
+                    this.setState({points: 0})
+            }
         }
     }
 

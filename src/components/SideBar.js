@@ -66,6 +66,7 @@ export default class SideBar extends Component {
                 <OverlayTrigger trigger="click" placement="right" overlay={profile}>
                 <button onClick={() => this.getStats()}>Tilastot</button>
                 </OverlayTrigger>
+                <Link to="/achievements"><button>Saavutukset</button></Link>
                 <div className={"gitHubDiv"}>
                     <img src={gitHubLogo} alt={"GitHubLogo"}/>
                     <text>Samuel Laisaar</text>

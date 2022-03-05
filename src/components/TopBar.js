@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import logo from '../res/testlogo.png';
 import {Navbar, Form, Button, Alert, Container, Nav} from 'react-bootstrap'
 import {CSSTransition} from "react-transition-group";
-import {Link, Redirect } from "react-router-dom";
+import {Link} from "react-router-dom";
 import axios from "axios";
 export default class TopBar extends Component {
 
@@ -162,7 +162,7 @@ export default class TopBar extends Component {
                             <Nav className="me-auto"> </Nav>
                             {this.props.isLogged ?
                             <Nav>
-                                <button id={"logoutButton"} className={"order-sm-1"} onClick={this.handleLogout}><Redirect to={"/"}/>Kirjaudu ulos</button>
+                                <Link to="/"><button id={"logoutButton"} className={"order-sm-1"} onClick={this.handleLogout}>Kirjaudu ulos</button></Link>
                             </Nav>
                                 : <Nav>
                                     <button onClick={this.handleisLoginShown}>Kirjaudu</button>

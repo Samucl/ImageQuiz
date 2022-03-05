@@ -9,6 +9,7 @@ import SideBar from "./components/SideBar";
 import {Col, Container, Row} from "react-bootstrap";
 import {CSSTransition} from "react-transition-group";
 import HighScore from "./components/HighScore";
+import Achievements from "./components/Achievements";
 
 function App() {
 
@@ -64,8 +65,11 @@ function App() {
                                 <Route path="/highscores">
                                     <HighScore />
                                 </Route>
+                                <Route path="/achievements">
+                                    <Achievements/>
+                                </Route>
                                 <Route path="/">
-                                    <Home username={username}/>
+                                    <Home username={username} isLogged={isLogged}/>
                                 </Route>
                             </Switch>
                         </Col>

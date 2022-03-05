@@ -323,7 +323,7 @@ font-size: 14px;
 
 .gamesrow {
   border-radius: 10px;
-  height: 20vh;
+  height: 100px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -338,12 +338,24 @@ font-size: 14px;
 
 .gamesrow p{
   margin: 0;
-  font-size: 5vh;
-  color: black;
-  background-color: white;
-  padding: 0 8px 0 8px;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+  font-size: 30px;
+}
+
+
+.animalsButton{background-image: linear-gradient(to right, #43cea2 0%, #185a9d  51%, #43cea2  100%)}
+.flagsButton{background-image: linear-gradient(to right, #D38312 0%, #A83279  51%, #D38312  100%)}
+.btn-grad {
+  margin: 10px;
+  text-align: center;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  display: block;
+}
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }
 
 .alertDiv {

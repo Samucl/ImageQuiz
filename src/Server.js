@@ -164,7 +164,6 @@ app.post("/api/login", urlencodedParser, function (req, res) {
             const email = req.body.email;
             let queryString = "SELECT * FROM user WHERE email = ?";
             let result = await query(queryString, [email]);
-            console.log(result)
             const hashwordRes = (result[0].password).toString()
             const compare = await bcrypt.compare(req.body.password, result[0].password)
             if(compare){
@@ -186,7 +185,7 @@ app.post("/api/login", urlencodedParser, function (req, res) {
 app.post("/api/setStats", urlencodedParser, authenticateToken, function (req){
     (async () => {
         try {
-            let queryString = "UPDATE user SET games_played = games_played + 1, xp = ? WHERE username = ?"
+            let queryString = "UPDATE user SET games_played = games_played + 1, xp = xp + ? WHERE username = ?"
             await query(queryString, [req.body.points, req.user.name.username]);
         }catch (err){}
     })()
@@ -231,6 +230,29 @@ app.get('/api/getHighScores', (req, res) => {
         catch (err) {
             console.log(err);
         }
+    })()
+});
+
+app.post("/api/getPersonalScores", urlencodedParser, authenticateToken, function (req, res){
+    (async () => {
+        try {
+            const user = req.user.name.username;
+            let queryString = "SELECT score FROM animals_scores WHERE userid = (SELECT id FROM user WHERE username = ?)";
+            let resultAnimals = await query(queryString, [user]);
+            queryString = "SELECT score FROM flags_scores WHERE userid = (SELECT id FROM user WHERE username = ?)";
+            let resultFlags = await query(queryString, [user]);
+
+            let flagsScore = 0;
+            let animalsScore = 0;
+            if(resultAnimals.length !== 0){
+                animalsScore = resultAnimals[0].score;
+            }
+            if(resultFlags.length !== 0){
+                flagsScore = resultFlags[0].score;
+            }
+
+            res.send({animalsScore: animalsScore, flagsScore: flagsScore})
+        }catch (err){}
     })()
 });
 

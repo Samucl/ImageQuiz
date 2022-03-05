@@ -7,7 +7,9 @@ export default class HighScore extends Component {
         super(props);
         this.state = {
             animalsTop10: [],
-            flagsTop10: []
+            flagsTop10: [],
+            animalsScore: 0,
+            flagsScore: 0,
         }
     }
 
@@ -22,6 +24,18 @@ export default class HighScore extends Component {
                     this.handleForEach(flagsArray)
                     this.setState({flagsTop10: flagsArray})
                 })
+    }
+
+    handlePersonalScore() {
+        let tokenJson
+        tokenJson = localStorage.getItem('myToken')
+        axios
+            .post('http://localhost:8080/api/getPersonalScores', ' ',
+                { headers: {Authorization: 'Bearer: ' + tokenJson}})
+            .then(res =>{
+                this.setState({animalsScore: res.data.animalsScore})
+                this.setState({flagsScore: res.data.flagsScore})
+            })
     }
 
     handleForEach(array){
@@ -45,6 +59,7 @@ export default class HighScore extends Component {
 
     componentDidMount() {
         this.handleHighScoresArrays()
+        this.handlePersonalScore()
     }
 
     render() {
@@ -56,6 +71,7 @@ export default class HighScore extends Component {
 
                         <Col className={"top10col"}>
                             <p style={{fontSize: "30px"}}>🐶Eläimet🐱</p>
+                            <p style={{fontSize: "15px"}}>Oma ennätys <strong>{this.state.animalsScore}</strong></p>
                             {this.state.animalsTop10.map((item) =>
                             <li key={item.id}>
                                 <Row className={"top10itemRow"}>
@@ -69,6 +85,7 @@ export default class HighScore extends Component {
 
                         <Col className={"top10col"}>
                             <p style={{fontSize: "30px"}}>🏴Liput🏳️</p>
+                            <p style={{fontSize: "15px"}}>Oma ennätys <strong>{this.state.flagsScore}</strong></p>
                             {this.state.flagsTop10.map((item) =>
                                 <Row className={"top10itemRow"}>
                                     <Col className={"top10item"}>
