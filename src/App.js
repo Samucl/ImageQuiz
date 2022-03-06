@@ -16,6 +16,7 @@ function App() {
     const [username, setUsername] = useState('');
     const [isLogged, setIsLogged] = useState(false);
     const [showSidebar, setShowSidebar] = useState(true);
+    const [isRegisterShown, setIsRegisterShown] = useState(false);
 
     useEffect(() => {
         let tokenJson
@@ -41,11 +42,12 @@ function App() {
     const handleIsLogged = (isLoggedFromTopBar) => { setIsLogged(isLoggedFromTopBar) }
     const handleDisplayUsername = (DisplayUsernameFromTopBar) => { setUsername(DisplayUsernameFromTopBar) }
     const handleShowSidebar = (showSidebarFromTopBar) => { setShowSidebar(showSidebarFromTopBar) }
+    const handleIsRegisterShown = (isRegisterShownFromFrontPage) => { setIsRegisterShown(isRegisterShownFromFrontPage) }
 
     return (
         <div className="container-fluid no-padding">
             <Router>
-                <TopBar isLogged={isLogged} changeIsLogged={handleIsLogged} changeDisplayUsername={handleDisplayUsername} showSidebar={showSidebar} changeShowSidebar={handleShowSidebar}/>
+                <TopBar handleIsRegisterShown={handleIsRegisterShown} isRegisterShown={isRegisterShown} isLogged={isLogged} changeIsLogged={handleIsLogged} changeDisplayUsername={handleDisplayUsername} showSidebar={showSidebar} changeShowSidebar={handleShowSidebar}/>
                 <Container fluid className={"switchContainer"}>
                     <Row className={"rows"}>
                         <CSSTransition in={isLogged && showSidebar} unmountOnExit timeout={400} classNames="slideSide">
@@ -69,7 +71,7 @@ function App() {
                                     <Achievements/>
                                 </Route>
                                 <Route path="/">
-                                    <Home username={username} isLogged={isLogged}/>
+                                    <Home username={username} isLogged={isLogged} handleIsRegisterShown={handleIsRegisterShown} isRegisterShown={isRegisterShown}/>
                                 </Route>
                             </Switch>
                         </Col>

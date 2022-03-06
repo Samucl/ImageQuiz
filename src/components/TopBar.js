@@ -10,7 +10,6 @@ export default class TopBar extends Component {
         super(props);
         this.state = {
             isLoginShown: false,
-            isRegisterShown: false,
             validated: false,
             formError: false,
             formSuccess: false,
@@ -116,14 +115,14 @@ export default class TopBar extends Component {
             this.setState({isLoginShown: false})
         else{
             this.setState({isLoginShown: true})
-            this.setState({isRegisterShown: false})
+            this.props.handleIsRegisterShown(false)
         }
     }
     handleisRegisterShown() {
-        if(this.state.isRegisterShown)
-            this.setState({isRegisterShown: false})
+        if(this.props.isRegisterShown)
+            this.props.handleIsRegisterShown(false)
         else{
-            this.setState({isRegisterShown: true})
+            this.props.handleIsRegisterShown(true)
             this.setState({isLoginShown: false})
         }
     }
@@ -191,7 +190,7 @@ export default class TopBar extends Component {
                 </div>
                 </CSSTransition>
 
-                <CSSTransition in={this.state.isRegisterShown} unmountOnExit timeout={400} classNames="slide">
+                <CSSTransition in={this.props.isRegisterShown} unmountOnExit timeout={400} classNames="slide">
                 <div className={"formdiv"}>
                     <Form noValidate onSubmit={this.handleRegister} validated={this.state.validated}>
                         <h3>Rekisteröidy</h3>

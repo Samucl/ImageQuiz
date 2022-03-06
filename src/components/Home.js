@@ -1,17 +1,25 @@
 import React, {Component} from 'react';
 import {Card, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import FrontPage from "./FrontPage";
 export default class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = {}
+        this.handleIsRegisterShown = this.handleIsRegisterShown.bind(this)
+    }
+
+    handleIsRegisterShown() {
+        if(this.props.isRegisterShown)
+            this.props.handleIsRegisterShown(false)
+        else
+            this.props.handleIsRegisterShown(true)
     }
 
     render() {
         return (
-            <div className={"homeDiv divOpacity"}>
+            <div className={"divOpacity"}>
                 {this.props.isLogged ?
                 <Container fluid className={"homeContainer"}>
                     <Row>
@@ -36,7 +44,7 @@ export default class Home extends Component {
                             </Card.Body>
                         </Card>
                     </Row>
-                </Container> : <div> ImageQuiz! </div>}
+                </Container> : <FrontPage handleIsRegisterShown={this.handleIsRegisterShown}/>}
             </div>
         )
     }

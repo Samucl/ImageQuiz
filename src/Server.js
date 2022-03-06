@@ -250,7 +250,6 @@ app.post("/api/getPersonalScores", urlencodedParser, authenticateToken, function
             if(resultFlags.length !== 0){
                 flagsScore = resultFlags[0].score;
             }
-
             res.send({animalsScore: animalsScore, flagsScore: flagsScore})
         }catch (err){}
     })()

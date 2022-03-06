@@ -13,6 +13,7 @@ export default class Game extends Component {
         let date = Date.now() + 60000;
         this.state = {
             isButtonSelected: false,
+            isNewLevel: false,
             isGameSelected: false,
             isGameStart: false,
             isGameEnd: false,
@@ -23,9 +24,11 @@ export default class Game extends Component {
             img: tempimg,
             effectClass: '',
             points: 0,
+            xp: 0,
             displayPoints: 0,
             names: [],
-            game: ''
+            game: '',
+            gameName: ''
         }
         this.getImage = this.getImage.bind(this);
         this.renderer = this.renderer.bind(this);
@@ -39,6 +42,7 @@ export default class Game extends Component {
         this.completed = this.completed.bind(this);
         this.handleIsGameSelected = this.handleIsGameSelected.bind(this);
         this.disableEffects = this.disableEffects.bind(this);
+        this.handleNewLevel = this.handleNewLevel.bind(this);
     }
 
     disableEffects() {
@@ -48,6 +52,11 @@ export default class Game extends Component {
     handleIsGameSelected(name) {
         this.setState({isGameSelected: true})
         this.setState({game: name})
+        if(name === 'Animals'){
+            this.setState({gameName: 'Eläimet'})
+        } else if (name === 'Flags'){
+            this.setState({gameName: 'Liput'})
+        }
     }
 
     handleIsGameStart() {
@@ -56,6 +65,7 @@ export default class Game extends Component {
     }
 
     handleIsGameEnd() {
+        this.setState({isNewLevel: false})
         this.setState({isGameEnd: !this.state.isGameEnd})
     }
 
@@ -64,8 +74,9 @@ export default class Game extends Component {
     }
 
     getImage() {
-        if(this.state.isGameEnd)
+        if(this.state.isGameEnd){
             this.handleIsGameEnd()
+        }
         if(!this.state.isGameStart){
             this.handleIsGameStart()
             this.handleExpirationDate()
@@ -137,8 +148,26 @@ export default class Game extends Component {
         }
     }
 
+    handleNewLevel() {
+        let tokenJson
+        tokenJson = localStorage.getItem('myToken')
+        axios
+            .post('http://localhost:8080/api/getStats', ' ',
+                { headers: {Authorization: 'Bearer: ' + tokenJson}})
+            .then(res => {
+                this.setState({xp: res.data.xp})
+                console.log(Math.floor(this.state.xp/100))
+                console.log(Math.floor((this.state.displayPoints + this.state.xp)/100))
+                console.log(Math.floor(this.state.xp/100) < Math.floor((this.state.displayPoints + this.state.xp)/100))
+                if(Math.floor(this.state.xp/100) < Math.floor((this.state.displayPoints + this.state.xp)/100)){
+                    this.setState({isNewLevel: true})
+                }
+            })
+    }
+
     completed() {
-        this.setState({displayPoints: this.state.points});
+        this.setState({displayPoints: this.state.points})
+        this.handleNewLevel()
         this.handleScore()
         this.handleIsGameEnd()
         this.handleIsGameStart()
@@ -161,13 +190,15 @@ export default class Game extends Component {
                 <div className={"gameTimeContainer"}>
                     {this.state.isGameStart ?
                         <Countdown date={this.state.expirationDate} renderer={this.renderer}/>
-                        : null}
+                        : <h5>{this.state.gameName}</h5>}
                 </div>
                 <div className={"gameContainer"}>
                     {this.state.isGameEnd ?
                     <div className={"endDiv"}>
                         <h5>Pelin lopulliset pisteet</h5>
                         <h1>{this.state.displayPoints}</h1>
+                        {this.state.isNewLevel ?
+                        <h5 style={{color: "gold"}}>Saavutit seuraavan tason!</h5> : null}
                     </div> : null}
                     {this.state.isGameStart ?
                     <div className={"pointsContainer"}>
