@@ -19,7 +19,7 @@ export default class Achievements extends Component {
         let tokenJson
         tokenJson = localStorage.getItem('myToken')
         axios
-            .post('http://localhost:8080/api/getPersonalScores', ' ',
+            .get('http://localhost:8080/api/getPersonalScores',
                 { headers: {Authorization: 'Bearer: ' + tokenJson}})
             .then(res =>{
                 console.log( res.data.animalsScore)
@@ -27,7 +27,7 @@ export default class Achievements extends Component {
                 this.setState({flagsScore: res.data.flagsScore})
             })
         axios
-            .post('http://localhost:8080/api/getStats', ' ',
+            .get('http://localhost:8080/api/getStats',
                 { headers: {Authorization: 'Bearer: ' + tokenJson}})
             .then(res => {
                 this.setState({xp: res.data.xp})

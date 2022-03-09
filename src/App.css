@@ -271,6 +271,11 @@ font-size: 14px;
   color: white;
 }
 
+.gameButton:active {
+  background-color: darkmagenta;
+  color: white;
+}
+
 .gameTimeContainer {
   background-color: gray;
   width: 20vh;
@@ -535,6 +540,25 @@ font-size: 14px;
 .frontpagecontainer .col {
 }
 
+.green{
+  background-color: green;
+  color: white;
+}
+.green:active{
+  background-color: green;
+  color: white;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}
+
+.red:active {
+  background-color: red;
+  color: white;
+}
+
 /* Animaatiot kuvaan */
 
 @keyframes panOut {
@@ -561,6 +585,41 @@ font-size: 14px;
 
 .imgBlur{
   animation: 6s ease-out 0s 1 blur;
+}
+
+@keyframes skew {
+  0% {
+    transform: skew(65deg, 25deg);
+  }
+  70% {
+    transform: skew(45deg, 25deg);
+  }
+  100% {
+    transform: skew(0deg, 0deg);
+  }
+}
+
+.imgSkew{
+  animation: 6s ease-out 0s 1 skew;
+}
+
+@keyframes translate {
+  0% {
+    transform: translate(50%,-50%) scale(5);
+  }
+  40% {
+    transform: translate(-50%,-50%) scale(5);
+  }
+  80% {
+    transform: translate(-50%,50%) scale(5);
+  }
+  100% {
+    transform: translate(0,0) scale(1);
+  }
+}
+
+.imgTranslate{
+  animation: 6s ease-out 0s 1 translate;
 }
 
 @keyframes slide {

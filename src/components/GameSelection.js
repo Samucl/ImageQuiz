@@ -21,7 +21,7 @@ export default class GameSelection extends Component {
         let tokenJson
         tokenJson = localStorage.getItem('myToken')
         axios
-            .post('http://localhost:8080/api/getPersonalScores', ' ',
+            .get('http://localhost:8080/api/getPersonalScores',
                 { headers: {Authorization: 'Bearer: ' + tokenJson}})
             .then(res =>{
                 this.setState({animalsScore: res.data.animalsScore})

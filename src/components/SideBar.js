@@ -22,7 +22,7 @@ export default class SideBar extends Component {
         tokenJson = localStorage.getItem('myToken')
         if(tokenJson!=null){
             axios
-                .post('http://localhost:8080/api/getStats', ' ',
+                .get('http://localhost:8080/api/getStats',
                     { headers: {Authorization: 'Bearer: ' + tokenJson}})
                 .then(res => {
                     this.setState({xp: res.data.xp})

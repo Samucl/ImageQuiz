@@ -3,7 +3,7 @@ import TopBar from "./components/TopBar";
 import Game from "./components/Game";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Home from "./components/Home";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import SideBar from "./components/SideBar";
 import {Col, Container, Row} from "react-bootstrap";
@@ -17,6 +17,7 @@ function App() {
     const [isLogged, setIsLogged] = useState(false);
     const [showSidebar, setShowSidebar] = useState(true);
     const [isRegisterShown, setIsRegisterShown] = useState(false);
+    const countRef = useRef()
 
     useEffect(() => {
         let tokenJson
@@ -59,7 +60,7 @@ function App() {
                         <Col className={"switchCol"}>
                             <Switch>
                                 <Route path="/game">
-                                    <Game />
+                                    <Game countRef={countRef}/>
                                     {!isLogged ?
                                     <div className={"alertDiv"}><div><p>Kirjaudu sisään pelataksesi</p></div></div>
                                         : null}

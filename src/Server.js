@@ -1,19 +1,17 @@
-var express = require("express");
-var app = express();
-var bodyParser = require('body-parser'); // Create application/x-www-form-urlencoded parser (for POST)
-//var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var mysql = require('mysql');
-var util = require('util'); // for async calls
-//var utilPromisify = require('util.promisify').shim(); // ?? for connection pools
+const express = require("express");
+const app = express();
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
+const util = require('util');
 require('dotenv').config()
 const secrets = require('../config/secrets.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const animals1 = require('random-animals-api');
 const fetch = require("node-fetch");
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json()); // for reading JSON
+app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -22,13 +20,13 @@ app.use(function(req, res, next) {
 });
 
 const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "imagequiz_db"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
-// node native promisify
-const query = util.promisify(conn.query).bind(conn); // is bind needed?
+
+const query = util.promisify(conn.query).bind(conn);
 
 conn.connect(function(err) {
     if (err) throw err;
@@ -191,7 +189,7 @@ app.post("/api/setStats", urlencodedParser, authenticateToken, function (req){
     })()
 });
 
-app.post("/api/getStats", urlencodedParser, authenticateToken, function (req, res){
+app.get("/api/getStats", urlencodedParser, authenticateToken, function (req, res){
     (async () => {
         try {
             const user = req.user.name.username;
@@ -233,7 +231,7 @@ app.get('/api/getHighScores', (req, res) => {
     })()
 });
 
-app.post("/api/getPersonalScores", urlencodedParser, authenticateToken, function (req, res){
+app.get("/api/getPersonalScores", urlencodedParser, authenticateToken, function (req, res){
     (async () => {
         try {
             const user = req.user.name.username;

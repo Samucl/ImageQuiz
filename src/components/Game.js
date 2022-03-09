@@ -27,6 +27,7 @@ export default class Game extends Component {
             xp: 0,
             displayPoints: 0,
             names: [],
+            buttonClasses: ['light','light','light','light','light','light','light','light',],
             game: '',
             gameName: ''
         }
@@ -96,9 +97,15 @@ export default class Game extends Component {
     }
 
     randomEffect() {
+        this.setState({isLoading: false})
+        let classes = [...this.state.buttonClasses];
+        for(let i = 0; i < classes.length; i++){
+            classes[i] = 'light'
+        }
+        this.setState({buttonClasses: classes})
         this.setState({isButtonSelected: false})
         if(this.state.isGameStart && this.state.isEffects){
-            let rand = Math.floor(Math.random() * 2);
+            let rand = Math.floor(Math.random() * 4);
 
             switch (rand) {
                 case 0:
@@ -108,7 +115,10 @@ export default class Game extends Component {
                     this.setState({effectClass: 'imgBlur'});
                     break;
                 case 2:
-                    //TODO
+                    this.setState({effectClass: 'imgSkew'})
+                    break;
+                case 3:
+                    this.setState({effectClass: 'imgTranslate'})
                     break;
                 default:
             }
@@ -116,13 +126,18 @@ export default class Game extends Component {
     }
 
     checkButton(int) {
+        let classes = [...this.state.buttonClasses];
         if(!this.state.isButtonSelected){
             if(int === this.state.item){ //Jos kuva arvataan
+                classes[int] = 'success'
+                this.setState({buttonClasses: classes})
                 this.getImage()
                 this.setState({points: this.state.points + 10})
                 this.setState({isButtonSelected: true})
             }
             else {
+                classes[int] = 'danger'
+                this.setState({buttonClasses: classes})
                 if(this.state.points > 5)
                     this.setState({points: this.state.points - 5})
                 else
@@ -152,13 +167,10 @@ export default class Game extends Component {
         let tokenJson
         tokenJson = localStorage.getItem('myToken')
         axios
-            .post('http://localhost:8080/api/getStats', ' ',
+            .get('http://localhost:8080/api/getStats',
                 { headers: {Authorization: 'Bearer: ' + tokenJson}})
             .then(res => {
                 this.setState({xp: res.data.xp})
-                console.log(Math.floor(this.state.xp/100))
-                console.log(Math.floor((this.state.displayPoints + this.state.xp)/100))
-                console.log(Math.floor(this.state.xp/100) < Math.floor((this.state.displayPoints + this.state.xp)/100))
                 if(Math.floor(this.state.xp/100) < Math.floor((this.state.displayPoints + this.state.xp)/100)){
                     this.setState({isNewLevel: true})
                 }
@@ -212,25 +224,25 @@ export default class Game extends Component {
                             <table>
                                 <tbody>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(0)} className="gameButton btn btn-light">{this.state.names[0]}</Button></td>
-                                    <td><Button onClick={() => this.checkButton(1)} className="gameButton btn btn-light">{this.state.names[1]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(0)} className={"gameButton btn btn-" + this.state.buttonClasses[0]}>{this.state.names[0]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(1)} className={"gameButton btn btn-" + this.state.buttonClasses[1]}>{this.state.names[1]}</Button></td>
                                 </tr>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(2)} className="gameButton btn btn-light">{this.state.names[2]}</Button></td>
-                                    <td><Button onClick={() => this.checkButton(3)} className="gameButton btn btn-light">{this.state.names[3]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(2)} className={"gameButton btn btn-" + this.state.buttonClasses[2]}>{this.state.names[2]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(3)} className={"gameButton btn btn-" + this.state.buttonClasses[3]}>{this.state.names[3]}</Button></td>
                                 </tr>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(4)} className="gameButton btn btn-light">{this.state.names[4]}</Button></td>
-                                    <td><Button onClick={() => this.checkButton(5)} className="gameButton btn btn-light">{this.state.names[5]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(4)} className={"gameButton btn btn-" + this.state.buttonClasses[4]}>{this.state.names[4]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(5)} className={"gameButton btn btn-" + this.state.buttonClasses[5]}>{this.state.names[5]}</Button></td>
                                 </tr>
                                 <tr>
-                                    <td><Button onClick={() => this.checkButton(6)} className="gameButton btn btn-light">{this.state.names[6]}</Button></td>
-                                    <td><Button onClick={() => this.checkButton(7)} className="gameButton btn btn-light">{this.state.names[7]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(6)} className={"gameButton btn btn-" + this.state.buttonClasses[6]}>{this.state.names[6]}</Button></td>
+                                    <td><Button onClick={() => this.checkButton(7)} className={"gameButton btn btn-" + this.state.buttonClasses[7]}>{this.state.names[7]}</Button></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        : <div><Button className="gameButton btn btn-light" onClick={this.getImage}>Aloita peli</Button></div>}
+                        : <div><Button className={"gameButton btn btn-light"} onClick={this.getImage}>Aloita peli</Button></div>}
                 </div>
             </Container>: <GameSelection handleIsGameSelected={this.handleIsGameSelected} disableEffects={this.disableEffects}/>}
             </div>
