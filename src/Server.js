@@ -144,8 +144,8 @@ app.get('/api/getFlags', (req, res) => {
             fetch('https://restcountries.com/v3.1/all')
                 .then(response => response.json())
                 .then(data => {
-                    const names = [data[rndms[0]].name.common, data[rndms[1]].name.common, data[rndms[2]].name.common, data[rndms[3]].name.common,
-                        data[rndms[4]].name.common, data[rndms[5]].name.common, data[rndms[6]].name.common, data[rndms[7]].name.common];
+                    const names = [data[rndms[0]].translations.fin.common, data[rndms[1]].translations.fin.common, data[rndms[2]].translations.fin.common, data[rndms[3]].translations.fin.common,
+                        data[rndms[4]].translations.fin.common, data[rndms[5]].translations.fin.common, data[rndms[6]].translations.fin.common, data[rndms[7]].translations.fin.common];
                     const rand = Math.floor(Math.random() * 7);
                     res.send({url: data[rndms[rand]].flags.png, item: rand, names: names})
                 })

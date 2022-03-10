@@ -181,7 +181,7 @@ export default class TopBar extends Component {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Salasana</Form.Label>
-                            <Form.Control type="password" placeholder="Password" value={this.state.password} onChange={e => this.handlePasswordChange(e)} required/>
+                            <Form.Control type="password" placeholder="Salasana" value={this.state.password} onChange={e => this.handlePasswordChange(e)} required/>
                         </Form.Group>
                         <Button variant="primary" type="submit" className={"subButton"}>Kirjaudu</Button>
                     </Form>
@@ -204,11 +204,11 @@ export default class TopBar extends Component {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Salasana</Form.Label>
-                            <Form.Control type="password" placeholder="Password" value={this.state.password} onChange={e => this.handlePasswordChange(e)} required/>
+                            <Form.Control type="password" placeholder="Salasana" value={this.state.password} onChange={e => this.handlePasswordChange(e)} required/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Salasana uudelleen</Form.Label>
-                            <Form.Control type="password" placeholder="Password" value={this.state.password2} onChange={e => this.handlePassword2Change(e)} required/>
+                            <Form.Control type="password" placeholder="Salasana" value={this.state.password2} onChange={e => this.handlePassword2Change(e)} required/>
                         </Form.Group>
                         <Button variant="primary" type="submit" className={"subButton"}>Kirjaudu</Button>
                     </Form>
