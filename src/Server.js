@@ -203,19 +203,6 @@ app.get("/api/getStats", urlencodedParser, authenticateToken, function (req, res
     })()
 });
 
-app.get('/api/getAnimalsHighScores', (req, res) => {
-    (async () => {
-        try {
-            let queryString = "SELECT animals_scores.score, user.username FROM animals_scores INNER JOIN user ON user.id = animals_scores.userid ORDER BY score DESC LIMIT 10"
-            let result = await query(queryString, []);
-            res.send(result)
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })()
-});
-
 app.get('/api/getHighScores', (req, res) => {
     (async () => {
         try {
