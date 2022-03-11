@@ -31,9 +31,8 @@ The result was a picture guessing game web app with features like:
 
 ## Screenshots
 
+![exploring the app](images/ExploringGif.gif)
 
-![exploring the app](images/ExploringGif.gif =x350)
+![playing game "Animals"](images/AnimalsGameGif.gif)
 
-![playing game "Animals"](images/AnimalsGameGif.gif =x350)
-
-![playing game "Flags"](images/FlagsGameGif.gif =x350)
+![playing game "Flags"](images/FlagsGameGif.gif)
