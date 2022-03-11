@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const util = require('util');
 require('dotenv').config()
-const secrets = require('../config/secrets.js');
+const secrets = require('./config/secrets.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const animals1 = require('random-animals-api');
