@@ -1,4 +1,5 @@
-﻿# ImageQuiz
+﻿![ImageQuizLogo](src/res/testlogo.png)
+#
 
 This project was implemented in Metropolia's Web Application Development 2 course. The aim of the project was to use at least:
 
